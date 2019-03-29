@@ -2,7 +2,7 @@
   "homepage": "https://www.lottopicker.online",
   "repository": {
     "type": "git",
-    "url": "https://github.com/robotros/"
+    "url": "https://github.com/robotros/Lottery_App"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.17",

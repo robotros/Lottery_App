@@ -3,20 +3,40 @@ import * as SocrataAPI from './SocrataAPI';
 
 
 /**
-* React Component to Render WMPQ.org home page
+* React Component to Render Lotto Picker home page
 * @author [Aron Roberts](https://github.com/robotros)
 */
 class Home extends React.Component {
   state = {
     winning_number: [],
-    white_bal: 69,
+    white_ball: 69,
+    count: 5,
     power_ball: 26,
-    first_draw: 0.0149254,
-    second_draw: 0.0150376,
-    third_draw: 0.0151515,
-    fourth_draw: 0.0152672,
-    fifth_draw: 0.0153846,
-    pb_draw: 0.0384615,
+    single_draw: 0,
+  }
+
+  /**
+  * JavaDoc Here
+  * @param {int} count
+  * @param {int} draw
+  */
+  setSingleDraw(count, draw) {
+    if (draw < this.state.count) {
+      this.setState(
+          {single_draw: this.state.single_draw+(1/count)},
+          () => {
+            this.setSingleDraw(count--, draw++);
+          }
+      );
+    }
+  }
+
+  /**
+  * Lotto Algorithm
+  */
+  setMatrix() {
+    let base = this.state.single_draw*this.state.winning_number.length;
+    console.log(base);
   }
 
   /**
@@ -31,11 +51,11 @@ class Home extends React.Component {
         });
   }
 
-
   /**
   * Run methods once component has mounted
   */
   componentDidMount() {
+    this.setSingleDraw(this.state.white_ball, 0);
     this.getWinners();
   }
 
@@ -45,7 +65,7 @@ class Home extends React.Component {
   */
   render() {
     return (
-      <div className='Home container'>
+      <div className='container'>
         <h1>Hello World</h1>
       </div>
     );
