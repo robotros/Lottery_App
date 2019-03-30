@@ -167,7 +167,7 @@ class Home extends React.Component {
   render() {
     return (
       <div className='Home container'>
-        <h1>PoweBall Pick Generator</h1>
+        <h1>PowerBall Pick Generator</h1>
         <h2> Picks </h2>
         <p className='font-weight-bold'>{this.state.suggested_play.join(', ')}, <span className='text-danger'>{this.state.suggested_power}</span></p>
         <h2>Data</h2>
