@@ -43,13 +43,10 @@ class Home extends React.Component {
   * Roll random selection
   */
   suggestRandom() {
-    let pb = this.state.power_choice[
-        Math.floor(Math.random()*this.state.power_choice.length)];
-    let picks = this.state.white_choice
-        .sort(() => .5 - Math.random())
-        .slice(0, 5)
-        .sort(function(a, b) {
-          return a-b;
+    let pb = math.pickRandom(this.state.power_choice);
+    let picks = math.pickRandom(this.state.white_choice, 5)
+       .sort(function(a, b) {
+         return a-b;
         });
     this.checkWin(picks, pb);
   }
@@ -172,8 +169,7 @@ class Home extends React.Component {
       <div className='Home container'>
         <h1>PoweBall Pick Generator</h1>
         <h2> Picks </h2>
-        <p className='font-weight-bold'>{this.state.suggested_play.join(',')} PowerBall :
-          {this.state.suggested_power}</p>
+        <p className='font-weight-bold'>{this.state.suggested_play.join(', ')}, <span className='text-danger'>{this.state.suggested_power}</span></p>
         <h2>Data</h2>
         <ul>
           <li>draws to date: {this.state.winning_number.length}</li>
