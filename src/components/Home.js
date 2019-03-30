@@ -172,7 +172,7 @@ class Home extends React.Component {
       <div className='Home container'>
         <h1>PoweBall Pick Generator</h1>
         <h2> Picks </h2>
-        <p>{this.state.suggested_play.join(',')} PowerBall :
+        <p className='font-weight-bold'>{this.state.suggested_play.join(',')} PowerBall :
           {this.state.suggested_power}</p>
         <h2>Data</h2>
         <ul>
