@@ -92,9 +92,23 @@ class Home extends React.Component {
       }
       this.setState({white_choice: x}, () => {
         let random = this.state.white_choice.sort(() => .5 - Math.random()).slice(0, 5);
-        this.setState({suggested_play: random.sort(function(a, b) { return a-b })});
+        this.setState({suggested_play: random.sort(function(a, b) { return a-b })}, () => {
+        	console.log(this.checkWin(this.state.suggested_play, this.state.suggested_power));
+        });
       });
     });
+  }
+
+  /**
+  * Make SocrataAPI call to get streamer Lotto numbers
+  */
+  async checkWin(m,p) {
+  	let test = m.concat(p).join(' ');
+  	console.log(test);
+    await SocrataAPI.checkWinner(test)
+        .then( (data) => {
+      		return data;
+        });
   }
 
   /**
