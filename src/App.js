@@ -8,7 +8,7 @@
 import React from 'react';
 import {Route} from 'react-router-dom';
 import {library} from '@fortawesome/fontawesome-svg-core';
-import {faCopyright, faFlagUsa} from '@fortawesome/free-solid-svg-icons';
+import {faCopyright} from '@fortawesome/free-solid-svg-icons';
 // import ReactDOMServer from 'react-dom/server';
 import Head from './components/Head';
 import Foot from './components/Foot';
@@ -18,7 +18,7 @@ import './css/app.css';
 
 
 // font awesome icon library
-library.add(faCopyright, faFlagUsa);
+library.add(faCopyright);
 
 /**
 * React Component to Render WMPQ.org Website

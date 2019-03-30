@@ -1,5 +1,6 @@
 import React from 'react';
 import * as SocrataAPI from './SocrataAPI';
+import * as math from 'mathjs';
 
 
 /**
@@ -65,14 +66,15 @@ class Home extends React.Component {
       let i = 1;
 
       while (i < this.state.power_ball+1) {
-
         if (this.state.power_counts[i] < powerBase) {
           x.push(i);
         }
         i++;
       }
       this.setState({power_choice: x}, () => {
-        this.setState({suggested_power: this.state.power_choice[Math.floor(Math.random()*this.state.power_choice.length)]})      });
+        this.setState({suggested_power: this.state.power_choice[
+            Math.floor(Math.random()*this.state.power_choice.length)]});
+      });
     });
 
     this.setState({draw_counts: main.sort().reduce((prev, next) => {
@@ -90,7 +92,7 @@ class Home extends React.Component {
       }
       this.setState({white_choice: x}, () => {
         let random = this.state.white_choice.sort(() => .5 - Math.random()).slice(0, 5);
-        this.setState({suggested_play: random.sort()});
+        this.setState({suggested_play: random.sort(function(a, b) { return a-b })});
       });
     });
   }
@@ -123,9 +125,13 @@ class Home extends React.Component {
     return (
       <div className='Home container'>
         <h1>PoweBall Pick Generator</h1>
-        <p>draws to date:{this.state.winning_number.length}</p>
-        <h2>{this.state.suggested_play.join(',')} {this.state.suggested_power}</h2>
-
+        <h2> Picks </h2>
+        <p>{this.state.suggested_play.join(',')} PowerBall : {this.state.suggested_power}</p>
+        <h2>Data</h2>
+        <ul>
+          <li>draws to date: {this.state.winning_number.length}</li>
+          <li>Available Random Options: {((math.combinations(this.state.white_choice.length, this.state.white_choice.length < 5 ? this.state.white_choice.length : 5)*this.state.power_choice.length)+ '').replace(/(\d)(?=(\d{3})+$)/g, '$1,')}</li>
+        </ul>
       </div>
     );
   }
