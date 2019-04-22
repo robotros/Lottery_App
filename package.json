@@ -15,7 +15,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
     "install": "^0.12.2",
-    "mathjs": "^5.8.0",
+    "mathjs": "^5.9.0",
     "npm": "^6.9.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
