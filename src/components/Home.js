@@ -1,6 +1,8 @@
+/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
 import React from 'react';
 import * as SocrataAPI from './SocrataAPI';
 import * as math from 'mathjs';
+import SuggestedPlay from './SuggestedPlay';
 
 
 /**
@@ -22,6 +24,47 @@ class Home extends React.Component {
     suggested_power: 0,
     white_choice: [],
     power_choice: [],
+    random_choices: [],
+    top_choice: {'picks': [0, 0, 0, 0, 0], 'pb': 0},
+  }
+
+
+  /**
+  * Javadoc here
+  */
+  suggestTop() {
+    // Create items array
+    let items = Object.keys(this.state.draw_counts).map((key) => {
+      return [key, this.state.draw_counts[key]];
+    } );
+
+    // Sort the array based on the second element
+    items.sort((first, second) => {
+      return second[1] - first[1];
+    });
+
+    let pbItems = Object.keys(this.state.power_counts).map((key) => {
+      return [key, this.state.power_counts[key]];
+    } );
+
+    // Sort the array based on the second element
+    pbItems.sort((first, second) => {
+      return second[1] - first[1];
+    });
+
+    let tp = {'picks': items.slice(0, 5).map((i) => {
+      return i[0];
+    } ).sort(), 'pb': pbItems.slice(0, 1).map((i) => {
+      return i[0];
+    } )};
+
+    let test = tp.picks.concat(tp.pb).join(' ');
+    SocrataAPI.checkWinner(test)
+        .then((data) =>{
+          data.length < 1 ?
+            this.setState({top_choice: tp}) :
+            console.warn('No Top Picks');
+        });
   }
 
   /**
@@ -36,6 +79,15 @@ class Home extends React.Component {
           data.length < 1 ?
             this.setState({suggested_play: m, suggested_power: p}) :
             this.suggestRandom();
+          if (this.state.random_choices.length < 5) {
+            let choices = this.state.random_choices;
+            choices.push({'picks': m, 'pb': p});
+            this.setState({random_choices: choices}, () => {
+              this.suggestRandom();
+            });
+          } else {
+            this.suggestTop();
+          }
         });
   }
 
@@ -45,8 +97,8 @@ class Home extends React.Component {
   suggestRandom() {
     let pb = math.pickRandom(this.state.power_choice);
     let picks = math.pickRandom(this.state.white_choice, 5)
-       .sort(function(a, b) {
-         return a-b;
+        .sort(function(a, b) {
+          return a-b;
         });
     this.checkWin(picks, pb);
   }
@@ -166,10 +218,28 @@ class Home extends React.Component {
   */
   render() {
     return (
-      <div className='Home container'>
+      <div className = 'Home container'>
         <h1>PowerBall Pick Generator</h1>
+        <hr></hr>
         <h2> Picks </h2>
-        <p className='font-weight-bold'>{this.state.suggested_play.join(', ')}, <span className='text-danger'>{this.state.suggested_power}</span></p>
+        <div>
+          <h3>Top Pick</h3>
+          <SuggestedPlay
+            sp={this.state.top_choice}
+          />
+          <h3>Random Picks</h3>
+          {this.state.random_choices.length > 1 ?
+            this.state.random_choices.map((rc, index) =>
+              <SuggestedPlay
+                key = {index}
+                sp = {rc}
+              />
+            )
+            : <p></p>
+          }
+          <br></br>
+        </div>
+        <hr></hr>
         <h2>Data</h2>
         <ul>
           <li>draws to date: {this.state.winning_number.length}</li>
