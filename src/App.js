@@ -1,9 +1,9 @@
 /**
 * filename: App.js
-* Main component to render WMPQ Gaming Webpage
+* Main component to render lottoPicker.online Webpage
 *
 * Author:[Aron Roberts](github.com/robotros)
-* Last Update: 02/04/2019
+* Last Update: 04/22/2019
 */
 import React from 'react';
 import {Route} from 'react-router-dom';
