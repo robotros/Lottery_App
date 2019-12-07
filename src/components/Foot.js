@@ -1,10 +1,14 @@
+/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
+/* eslint no-invalid-this: "warn" */
+/* eslint max-len: "warn" */
+
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {SocialIcon} from 'react-social-icons';
 
 /**
-* React Component to Render footer for Lotto App
+* React Component to Render footer
 * @author [Aron Roberts](https://github.com/robotros)
 */
 class Foot extends Component {
@@ -27,7 +31,8 @@ class Foot extends Component {
             </div>
             <div className='col-md-6'>
               <p className='m-0 text-center text-white'>
-                Copyright <FontAwesomeIcon icon='copyright' /> 2019 Robotros Technologies
+                Copyright <FontAwesomeIcon icon='copyright' />
+                {new Date().getFullYear()} {this.props.company}
               </p>
             </div>
           </div>
@@ -39,6 +44,7 @@ class Foot extends Component {
 
 Foot.propTypes = {
   social: PropTypes.array.isRequired,
+  company: PropTypes.string.isRequired,
 };
 
 export default Foot;

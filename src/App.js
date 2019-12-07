@@ -26,6 +26,7 @@ library.add(faCopyright);
 */
 class LottoApp extends React.Component {
   state = {
+    company: 'Robotros Technologies',
     Nav: [
       {
         'path': '/',
@@ -34,12 +35,16 @@ class LottoApp extends React.Component {
       },
     ],
     social: [
-      {'url': 'https://www.facebook.com/wmpqgaming'},
+      {'url': 'https://www.facebook.com/robotrostech'},
       {'url': 'https://www.youtube.com/channel/UCgXsCoR3OWw7IE6UL_NWJYQ'},
-      {'url': 'https://www.twitch.tv/robotros'},
-      {'url': 'https://discord.gg/SDpxpVh'},
+      {'url': 'https://www.linkedin.com/company/robotros-technologies'},
       // {'url': 'emailto:robotros@wmpq.org'},
     ],
+    credentials:
+    {
+      username: '',
+      password: '',
+    },
   }
 
   /**
@@ -59,7 +64,10 @@ class LottoApp extends React.Component {
             />
           )}
         </div>
-        <Foot social={this.state.social}/>
+        <Foot
+          social={this.state.social}
+          company = {this.state.company}
+        />
       </main>
     );
   }
