@@ -44,14 +44,14 @@ class Form extends Component {
                     <input type='text' className='form-control'
                       name='username' id='username' autoComplete='username'
                       placeholder={this.props.credentials.username !== '' ?
-                        this.props.credentials.username : 'Infor User'}
+                        this.props.credentials.username : 'User'}
                       required>
                     </input>
                     <label htmlFor='password'>Password</label>
                     <input type='password' className='form-control'
                       name='password' id='password'
                       autoComplete='current-password'
-                      placeholder='Infor Password' required>
+                      placeholder='Password' required>
                     </input>
                   </div>
                   <div className='modal-footer'>

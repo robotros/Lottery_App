@@ -1,3 +1,7 @@
+/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
+/* eslint no-invalid-this: "warn" */
+/* eslint max-len: "warn" */
+
 /**
 * filename: App.js
 * Main component to render lottoPicker.online Webpage
@@ -37,13 +41,39 @@ class LottoApp extends React.Component {
       {'url': 'https://www.facebook.com/robotrostech'},
       {'url': 'https://www.youtube.com/channel/UCgXsCoR3OWw7IE6UL_NWJYQ'},
       {'url': 'https://www.linkedin.com/company/robotros-technologies'},
-      // {'url': 'emailto:robotros@wmpq.org'},
+      // {'url': 'emailto:a.roberts@robotros.tech'},
     ],
     credentials:
     {
       username: '',
       password: '',
     },
+  }
+
+  /**
+  * Make API call to get User information from ERP
+  * @param {HTMLElement} event login form
+  */
+  login = async (event) =>{
+    event.preventDefault();
+    let user = event.target[0].value;
+    let pass = event.target[1].value;
+    let test = false;
+
+   test ?
+    await this.setState({credentials: {username: user.toUpperCase(),
+      password: pass}}, document.getElementById('closeLogin').click()) :
+    console.error('Authenticaion Failed');
+  };
+
+  /**
+  * SetState credentials to ''
+  * @param {HTMLElement} event logout button
+  */
+  logout = async (event) => {
+    event.preventDefault();
+    await this.setState({credentials: {username: '', password: ''}});
+    console.warn('user logged out');
   }
 
   /**
@@ -58,7 +88,7 @@ class LottoApp extends React.Component {
           logo={Logo}
           Nav={this.state.Nav}
           credentials = {this.state.credentials}
-          login={this.loginInfor}
+          login={this.login}
           logout={this.logout}
         />
         <div className='center'>

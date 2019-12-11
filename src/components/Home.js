@@ -1,9 +1,10 @@
 /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
+/* eslint no-invalid-this: "warn" */
+/* eslint max-len: "warn" */
 import React from 'react';
 import * as SocrataAPI from './SocrataAPI';
 import * as math from 'mathjs';
 import SuggestedPlay from './SuggestedPlay';
-
 
 /**
 * React Component to Render Lotto Picker home page
@@ -68,7 +69,7 @@ class Home extends React.Component {
   }
 
   /**
-  * Make SocrataAPI call to check streamer Lotto numbers
+  * Make SocrataAPI call to check Lotto numbers
   * @param {array} m
   * @param {int} p
   */
@@ -170,7 +171,8 @@ class Home extends React.Component {
   setBase() {
     let base = Math.round(
         this.state.single_draw*this.state.winning_number.length);
-    let powerBase = Math.round((1/this.state.power_ball)*this.state.winning_number.length);
+    let powerBase =
+      Math.round((1/this.state.power_ball)*this.state.winning_number.length);
     this.setState({pick_base: base, pb_base: powerBase}, () => {
       this.generateCounts();
     });
