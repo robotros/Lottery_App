@@ -3,19 +3,17 @@
 * Main component to render lottoPicker.online Webpage
 *
 * Author:[Aron Roberts](github.com/robotros)
-* Last Update: 04/22/2019
+* Last Update: 12/11/2019
 */
 import React from 'react';
 import {Route} from 'react-router-dom';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {faCopyright} from '@fortawesome/free-solid-svg-icons';
-// import ReactDOMServer from 'react-dom/server';
 import Head from './components/Head';
 import Foot from './components/Foot';
 import Home from './components/Home';
+import Logo from './img/lottery-tickets.png';
 import './css/app.css';
-// import Contact from './components/Contact';
-
 
 // font awesome icon library
 library.add(faCopyright);
@@ -27,10 +25,11 @@ library.add(faCopyright);
 class LottoApp extends React.Component {
   state = {
     company: 'Robotros Technologies',
+    site: 'Lucky Lotto Picker',
     Nav: [
       {
         'path': '/',
-        'label': 'Home',
+        'label': 'PowerBall',
         'component': Home,
       },
     ],
@@ -54,7 +53,14 @@ class LottoApp extends React.Component {
   render() {
     return (
       <main className='app'>
-        <Head Nav={this.state.Nav}/>
+        <Head
+          site={this.state.site}
+          logo={Logo}
+          Nav={this.state.Nav}
+          credentials = {this.state.credentials}
+          login={this.loginInfor}
+          logout={this.logout}
+        />
         <div className='center'>
           {this.state.Nav.map((page) =>
             <Route

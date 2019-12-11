@@ -21,7 +21,7 @@ html {
 }
 
 body {
-  padding-top: 56px;
+  padding-top: 100px;
   font-family: 'Open Sans', sans-serif;
 }
 
@@ -31,6 +31,11 @@ header {
 
 h1, h2, h3, h4 {
   font-family: 'Baloo', cursive;
+}
+
+.title{
+  font-family: 'Baloo', cursive;
+  font-size: 1.5em;
 }
 
 .foot{

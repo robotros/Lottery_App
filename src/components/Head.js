@@ -1,9 +1,14 @@
+/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
+/* eslint no-invalid-this: "warn" */
+/* eslint max-len: "warn" */
+
 import React, {Component} from 'react';
 import NavLinks from './NavLinks';
+import Login from './Login';
 import PropTypes from 'prop-types';
 
 /**
-* React Component to Render Header for WMPQ Gaming
+* React Component to Render Header
 * @author [Aron Roberts](https://github.com/robotros)
 */
 class Head extends Component {
@@ -17,6 +22,10 @@ class Head extends Component {
         <nav className='navbar navbar-expand-lg navbar-dark bg-dark fixed-top'>
           <div className='container'>
             <div className='navbar-brand'>
+              <img src={this.props.logo} alt='Logo'></img>
+              <strong className='title'> {this.props.site}</strong> <br></br>
+              {this.props.credentials.username !== '' ?
+                ' Welcome, '+this.props.credentials.username :''}
             </div>
             <button className='navbar-toggler'
               type='button'
@@ -34,7 +43,16 @@ class Head extends Component {
                     key={L.path}
                     L={L}
                   />)}
+
+                <li className='nav-item'>
+                  <Login
+                    credentials= {this.props.credentials}
+                    login = {this.props.login}
+                    logout = {this.props.logout}
+                  />
+                </li>
               </ul>
+
             </div>
           </div>
         </nav>
@@ -45,6 +63,11 @@ class Head extends Component {
 
 Head.propTypes = {
   Nav: PropTypes.array.isRequired,
+  credentials: PropTypes.object.isRequired,
+  login: PropTypes.func,
+  logout: PropTypes.func,
+  logo: PropTypes.string.isRequired,
+  site: PropTypes.string.isRequired,
 };
 
 export default Head;
