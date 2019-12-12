@@ -21,7 +21,7 @@ html {
 }
 
 body {
-  padding-top: 100px;
+  padding-top: 9em;
   font-family: 'Open Sans', sans-serif;
 }
 
@@ -44,3 +44,4 @@ h1, h2, h3, h4 {
 .center-align {
   margin: 0 auto;
 }
+

@@ -237,7 +237,7 @@ class Home extends React.Component {
     dataSet.push({Description: 'Recent Draw Date',
       Value: lastDate});
 
-    dataSet.push({Description: 'Recent Win numbers',
+    dataSet.push({Description: 'Recent Win Numbers',
       Value: lastWin});
 
     this.setState({data: dataSet});
@@ -303,7 +303,6 @@ class Home extends React.Component {
               <a href='https://www.buylottoonline.com/playlotto.php?lot_id=3&account=54d8aa45'
                 target='_blank'
                 rel='noreferrer noopener'
-                type='button'
                 className='btn btn-primary mb-1'>
                 <FontAwesomeIcon icon='shopping-cart' /> Buy
               </a>

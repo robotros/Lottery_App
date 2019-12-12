@@ -31,7 +31,7 @@ library.add(faCopyright, faDice, faShoppingCart);
 class LottoApp extends React.Component {
   state = {
     company: 'Robotros Technologies',
-    site: 'Lucky Lotto Picker',
+    site: 'Lucky Lotto',
     Nav: [
       {
         'path': '/',
