@@ -30,6 +30,30 @@ class Home extends React.Component {
     random_choices: [],
     top_choice: {'picks': [0, 0, 0, 0, 0], 'pb': 0},
     data: [],
+    pwrStdDev: 0,
+    whtStdDev: 0,
+    showData: false,
+  }
+
+  /**
+  * Calculate standard deviation for counts
+  */
+  standardDeviation = () => {
+    console.warn(this.state.draw_counts);
+    let whiteStdDev = math.round(
+        math.std(Object.values(this.state.draw_counts)));
+    let powerStdDev = math.round(
+        math.std(Object.values(this.state.power_counts)));
+    this.setState({pwrStdDev: powerStdDev, whtStdDev: whiteStdDev});
+  }
+
+  /**
+  * toggleData
+  */
+  toggleData = () =>{
+
+    let status = this.state.showData ? false : true;
+    this.setState({showData: status});
   }
 
 
@@ -47,7 +71,7 @@ class Home extends React.Component {
 
     // Sort the array based on the second element
     items.sort((first, second) => {
-      return second[1] - first[1];
+      return first[1] - second[1];
     });
 
     let pbItems = Object.keys(this.state.power_counts).map((key) => {
@@ -56,11 +80,11 @@ class Home extends React.Component {
 
     // Sort the array based on the second element
     pbItems.sort((first, second) => {
-      return second[1] - first[1];
+      return first[1]-second[1];
     });
 
     let tp = {'picks': items.slice(0, 5).map((i) => {
-      return i[0];
+      return i[0] < 10 ? '0'+i[0]: i[0];
     } ).sort(), 'pb': pbItems.slice(0, 1).map((i) => {
       return i[0];
     } )};
@@ -124,7 +148,8 @@ class Home extends React.Component {
     let i = 1;
 
     while (i < this.state.white_ball+1) {
-      if (this.state.draw_counts[i] < this.state.pick_base) {
+      if (this.state.draw_counts[i] <
+        this.state.pick_base-this.state.whtStdDev) {
         m.push(i);
       }
       i++;
@@ -134,7 +159,8 @@ class Home extends React.Component {
     let n = 1;
 
     while (n < this.state.power_ball+1) {
-      if (this.state.power_counts[n] < this.state.pb_base) {
+      if (this.state.power_counts[n] <
+        this.state.pb_base-this.state.pwrStdDev) {
         pb.push(n);
       }
       n++;
@@ -209,7 +235,7 @@ class Home extends React.Component {
         .then( (data) => {
           this.setState({winning_number: data});
         });
-    console.warn(this.state.winning_number);
+    // console.warn(this.state.winning_number);
   }
 
   /**
@@ -240,6 +266,18 @@ class Home extends React.Component {
     dataSet.push({Description: 'Recent Win Numbers',
       Value: lastWin});
 
+    dataSet.push({Description: 'White Base',
+      Value: this.state.pick_base});
+
+    dataSet.push({Description: 'STD Deviation',
+      Value: this.state.whtStdDev});
+
+    dataSet.push({Description: 'Power Base',
+      Value: this.state.pb_base});
+
+    dataSet.push({Description: 'STD Deviation',
+      Value: this.state.pwrStdDev});
+
     this.setState({data: dataSet});
   }
 
@@ -252,6 +290,7 @@ class Home extends React.Component {
     await this.getWinners();
     await this.setBase();
     await this.generateCounts();
+    await this.standardDeviation();
     await this.filterWinners();
     this.buildData();
     this.suggestRandom();
@@ -307,13 +346,23 @@ class Home extends React.Component {
                 <FontAwesomeIcon icon='shopping-cart' /> Buy
               </a>
             </div>
+            <div className='col-sm-2'>
+              <button type='button'
+                onClick={this.toggleData}
+                className='btn btn-primary mb-1'>
+                <FontAwesomeIcon icon='dice' /> Display Data
+              </button>
+            </div>
           </div>
         </div>
         <hr></hr>
-        <h2>Data</h2>
-        <Table
-          data={this.state.data}
-        />
+        {this.state.showData ? <div>
+          <h2>Data</h2>
+          <Table
+            data={this.state.data}
+          />
+        </div>
+        : <hr></hr>}
       </div>
     );
   }
