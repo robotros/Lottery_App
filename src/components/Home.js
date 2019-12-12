@@ -5,6 +5,8 @@ import React from 'react';
 import * as SocrataAPI from './SocrataAPI';
 import * as math from 'mathjs';
 import SuggestedPlay from './SuggestedPlay';
+import Table from './Table';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 /**
 * React Component to Render Lotto Picker home page
@@ -27,6 +29,7 @@ class Home extends React.Component {
     power_choice: [],
     random_choices: [],
     top_choice: {'picks': [0, 0, 0, 0, 0], 'pb': 0},
+    data: [],
   }
 
 
@@ -34,6 +37,9 @@ class Home extends React.Component {
   * Javadoc here
   */
   suggestTop() {
+    console.warn(this.state.draw_counts);
+    console.warn(Math.round(
+        this.state.single_draw*this.state.winning_number.length));
     // Create items array
     let items = Object.keys(this.state.draw_counts).map((key) => {
       return [key, this.state.draw_counts[key]];
@@ -86,16 +92,18 @@ class Home extends React.Component {
             this.setState({random_choices: choices}, () => {
               this.suggestRandom();
             });
-          } else {
-            this.suggestTop();
           }
         });
+  }
+  newRandom =async () => {
+    await this.setState({random_choices: []});
+    this.suggestRandom();
   }
 
   /**
   * Roll random selection
   */
-  suggestRandom() {
+  suggestRandom = () => {
     let pb = math.pickRandom(this.state.power_choice);
     let picks = math.pickRandom(this.state.white_choice, 5)
         .sort(function(a, b) {
@@ -128,9 +136,7 @@ class Home extends React.Component {
       n++;
     }
 
-    this.setState({white_choice: m, power_choice: pb}, () => {
-      this.suggestRandom();
-    });
+    this.setState({white_choice: m, power_choice: pb});
   }
 
   /**
@@ -160,9 +166,7 @@ class Home extends React.Component {
       return prev;
     }, {});
 
-    this.setState({draw_counts: pickCount, power_counts: powerCount}, () => {
-      this.filterWinners();
-    });
+    this.setState({draw_counts: pickCount, power_counts: powerCount});
   }
 
   /**
@@ -173,20 +177,19 @@ class Home extends React.Component {
         this.state.single_draw*this.state.winning_number.length);
     let powerBase =
       Math.round((1/this.state.power_ball)*this.state.winning_number.length);
-    this.setState({pick_base: base, pb_base: powerBase}, () => {
-      this.generateCounts();
-    });
+    this.setState({pick_base: base, pb_base: powerBase});
   }
 
   /**
-  * JavaDoc Here
+  * Calculate chance a number will appear in given
+  * number of draws
   * @param {int} count
   * @param {int} draw
   */
   setSingleDraw(count, draw) {
     let chance = 0;
     while (draw < 5) {
-      chance = chance + (1/count);
+      chance = chance + (1/(count-1));
       count--;
       draw++;
     }
@@ -195,23 +198,64 @@ class Home extends React.Component {
   }
 
   /**
-  * Make SocrataAPI call to get streamer Lotto numbers
+  * Make SocrataAPI call to get winning Lotto numbers
   */
   async getWinners() {
     await SocrataAPI.getWinners()
         .then( (data) => {
-          this.setState({winning_number: data}, ()=>{
-            this.setBase();
-          });
+          this.setState({winning_number: data});
         });
+    console.warn(this.state.winning_number);
   }
+
+  /**
+  * Run build data for component
+  */
+  buildData = async () =>{
+    let dataSet = [];
+    let rollOptions =(math.combinations(this.state.white_choice.length,
+                      this.state.white_choice.length < 5 ?
+                        this.state.white_choice.length :
+                        5) * this.state.power_choice.length).toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+    let totalDraws = this.state.winning_number.length;
+    let lastDate = this.state.winning_number[totalDraws-1].draw_date.split('T')[0];
+    let lastWin = this.state.winning_number[totalDraws-1].winning_numbers;
+
+    dataSet.push({Description: 'Draws to Date',
+      Value: totalDraws});
+
+    dataSet.push({Description: 'Roll Options',
+      Value: rollOptions});
+
+    dataSet.push({Description: 'Recent Draw Date',
+      Value: lastDate});
+
+    dataSet.push({Description: 'Recent Win numbers',
+      Value: lastWin});
+
+    this.setState({data: dataSet});
+  }
+
+
+  /**
+  * Run Main Logic for component
+  */
+  main = async () => {
+    await this.setSingleDraw(this.state.white_ball, 0);
+    await this.getWinners();
+    await this.setBase();
+    await this.generateCounts();
+    await this.filterWinners();
+    this.buildData();
+    this.suggestRandom();
+    this.suggestTop();
+  };
 
   /**
   * Run methods once component has mounted
   */
   componentDidMount() {
-    this.setSingleDraw(this.state.white_ball, 0);
-    this.getWinners();
+    this.main();
   }
 
   /**
@@ -240,17 +284,30 @@ class Home extends React.Component {
             : <p></p>
           }
           <br></br>
+          <div className='row'>
+            <div className='col-sm-2'>
+              <button type='button'
+                onClick={this.newRandom}
+                className='btn btn-primary mb-1'>
+                <FontAwesomeIcon icon='dice' /> New Picks
+              </button>
+            </div>
+            <div className='col-sm-2'>
+              <a href='https://www.buylottoonline.com/playlotto.php?lot_id=3&3&track=lu.org.us'
+                target='_blank'
+                rel='noreferrer noopener'
+                type='button'
+                className='btn btn-primary mb-1'>
+                <FontAwesomeIcon icon='shopping-cart' /> Buy
+              </a>
+            </div>
+          </div>
         </div>
         <hr></hr>
         <h2>Data</h2>
-        <ul>
-          <li>draws to date: {this.state.winning_number.length}</li>
-          <li>Available Random Options: {((math.combinations(
-              this.state.white_choice.length,
-              this.state.white_choice.length < 5 ?
-                this.state.white_choice.length : 5)*this.state.power_choice.length)+ '')
-              .replace(/(\d)(?=(\d{3})+$)/g, '$1,')}</li>
-        </ul>
+        <Table
+          data={this.state.data}
+        />
       </div>
     );
   }
