@@ -350,7 +350,7 @@ class Home extends React.Component {
               <button type='button'
                 onClick={this.toggleData}
                 className='btn btn-primary mb-1'>
-                <FontAwesomeIcon icon='dice' /> Display Data
+                <FontAwesomeIcon icon='chart-bar' /> Display Data
               </button>
             </div>
           </div>
