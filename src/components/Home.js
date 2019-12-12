@@ -34,12 +34,12 @@ class Home extends React.Component {
 
 
   /**
-  * Javadoc here
+  * generate suggested pick
   */
   suggestTop() {
-    console.warn(this.state.draw_counts);
-    console.warn(Math.round(
-        this.state.single_draw*this.state.winning_number.length));
+    // console.warn(this.state.draw_counts);
+    // console.warn(Math.round(
+    //     this.state.single_draw*this.state.winning_number.length));
     // Create items array
     let items = Object.keys(this.state.draw_counts).map((key) => {
       return [key, this.state.draw_counts[key]];
@@ -95,6 +95,10 @@ class Home extends React.Component {
           }
         });
   }
+
+  /**
+  * Reset Random Rolls
+  */
   newRandom =async () => {
     await this.setState({random_choices: []});
     this.suggestRandom();
@@ -140,7 +144,7 @@ class Home extends React.Component {
   }
 
   /**
-  * JDoc here
+  * get number of occurances
   */
   generateCounts() {
     // create array for picks and powerball
@@ -170,7 +174,7 @@ class Home extends React.Component {
   }
 
   /**
-  * Roll random selection
+  * set baseline for counts
   */
   setBase() {
     let base = Math.round(
@@ -216,9 +220,12 @@ class Home extends React.Component {
     let rollOptions =(math.combinations(this.state.white_choice.length,
                       this.state.white_choice.length < 5 ?
                         this.state.white_choice.length :
-                        5) * this.state.power_choice.length).toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+                        5) *
+      this.state.power_choice.length).toString()
+        .replace(/(\d)(?=(\d{3})+$)/g, '$1,');
     let totalDraws = this.state.winning_number.length;
-    let lastDate = this.state.winning_number[totalDraws-1].draw_date.split('T')[0];
+    let lastDate = this.state.winning_number[totalDraws-1].draw_date
+        .split('T')[0];
     let lastWin = this.state.winning_number[totalDraws-1].winning_numbers;
 
     dataSet.push({Description: 'Draws to Date',
@@ -293,7 +300,7 @@ class Home extends React.Component {
               </button>
             </div>
             <div className='col-sm-2'>
-              <a href='https://www.buylottoonline.com/playlotto.php?lot_id=3&3&track=lu.org.us'
+              <a href='https://www.buylottoonline.com/playlotto.php?lot_id=3&account=54d8aa45'
                 target='_blank'
                 rel='noreferrer noopener'
                 type='button'

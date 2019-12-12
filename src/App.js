@@ -41,7 +41,7 @@ class LottoApp extends React.Component {
     ],
     social: [
       {'url': 'https://www.facebook.com/robotrostech'},
-      {'url': 'https://www.youtube.com/channel/UCgXsCoR3OWw7IE6UL_NWJYQ'},
+      // {'url': 'https://www.youtube.com/channel/UCgXsCoR3OWw7IE6UL_NWJYQ'},
       {'url': 'https://www.linkedin.com/company/robotros-technologies'},
       // {'url': 'emailto:a.roberts@robotros.tech'},
     ],
