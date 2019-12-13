@@ -14,24 +14,24 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 */
 class Home extends React.Component {
   state = {
-    winning_number: [],
-    pick_base: 0,
-    pb_base: 0,
-    white_ball: 69,
-    count: 5,
-    power_ball: 26,
-    single_draw: 0,
-    draw_counts: {},
-    power_counts: {},
+    winning_number: [], // historical data
+    pick_base: 0, // calculated base for normal number
+    pb_base: 0, // calculated base for poweball
+    white_ball: 69, // maximum normal ball number
+    count: 5, // number of normal picks
+    power_ball: 26, // maximum powerball number
+    single_draw: 0, // odds of number for single draw
+    draw_counts: {}, // draw counts for normal balls
+    power_counts: {}, // draw counts for power balls
     suggested_play: [0, 0, 0, 0, 0],
     suggested_power: 0,
     white_choice: [],
     power_choice: [],
     random_choices: [],
     top_choice: {'picks': [0, 0, 0, 0, 0], 'pb': 0},
-    data: [],
-    pwrStdDev: 0,
-    whtStdDev: 0,
+    data: [], // dataset for logic
+    pwrStdDev: 0, // standard deviation for powerball set
+    whtStdDev: 0, // standard deviation for normal balls
     showData: false,
   }
 
@@ -39,7 +39,6 @@ class Home extends React.Component {
   * Calculate standard deviation for counts
   */
   standardDeviation = () => {
-    console.warn(this.state.draw_counts);
     let whiteStdDev = math.round(
         math.std(Object.values(this.state.draw_counts)));
     let powerStdDev = math.round(
@@ -51,7 +50,6 @@ class Home extends React.Component {
   * toggleData
   */
   toggleData = () =>{
-
     let status = this.state.showData ? false : true;
     this.setState({showData: status});
   }
@@ -61,9 +59,6 @@ class Home extends React.Component {
   * generate suggested pick
   */
   suggestTop() {
-    // console.warn(this.state.draw_counts);
-    // console.warn(Math.round(
-    //     this.state.single_draw*this.state.winning_number.length));
     // Create items array
     let items = Object.keys(this.state.draw_counts).map((key) => {
       return [key, this.state.draw_counts[key]];
@@ -278,7 +273,41 @@ class Home extends React.Component {
     dataSet.push({Description: 'STD Deviation',
       Value: this.state.pwrStdDev});
 
+
     this.setState({data: dataSet});
+
+    let drawCountWeights =[];
+
+    Object.entries(this.state.draw_counts).forEach((draw)=> {
+      let diff = this.state.pick_base - draw[1];
+      let drawWeight = math.abs(diff)===0 ? 0 :
+        math.abs(diff) < this.state.whtStdDev ? math.abs(diff)/diff :
+        diff <0 ? diff +this.state.whtStdDev-1 :
+        diff-this.state.whtStdDev+1;
+
+      drawCountWeights.push({Number: draw[0],
+        Count: draw[1],
+        Weight: drawWeight});
+    });
+
+    this.setState({drawWeights: drawCountWeights});
+
+
+    let powerCountWeights =[];
+
+    Object.entries(this.state.power_counts).forEach((draw)=> {
+      let diff = this.state.pb_base - draw[1];
+      let drawWeight = math.abs(diff)===0 ? 0 :
+        math.abs(diff) < this.state.pwrStdDev ? math.abs(diff)/diff :
+        diff <0 ? diff +this.state.pwrStdDev-1 :
+        diff-this.state.pwrStdDev+1;
+
+      powerCountWeights.push({Number: draw[0],
+        Count: draw[1],
+        Weight: drawWeight});
+    });
+
+    this.setState({powerWeights: powerCountWeights});
   }
 
 
@@ -360,6 +389,18 @@ class Home extends React.Component {
           <h2>Data</h2>
           <Table
             data={this.state.data}
+          />
+          <h2>Draw Counts</h2>
+          <Table
+            data={this.state.drawWeights}
+          />
+          <h2>Power Counts</h2>
+          <Table
+            data={this.state.powerWeights}
+          />
+          <h2>Historical Draws</h2>
+          <Table
+            data={this.state.winning_number}
           />
         </div>
         : <hr></hr>}
