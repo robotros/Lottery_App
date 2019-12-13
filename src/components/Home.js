@@ -236,10 +236,10 @@ class Home extends React.Component {
   /**
   * Run build data for component
   */
-  buildData = async () =>{
+  buildData = () =>{
     let dataSet = [];
     let rollOptions =(math.combinations(this.state.white_choice.length,
-                      this.state.white_choice.length < 5 ?
+                      this.state.white_choice.length < this.state.count ?
                         this.state.white_choice.length :
                         5) *
       this.state.power_choice.length).toString()
