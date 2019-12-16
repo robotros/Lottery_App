@@ -16,6 +16,7 @@ import {faCopyright} from '@fortawesome/free-solid-svg-icons';
 import {faDice} from '@fortawesome/free-solid-svg-icons';
 import {faChartBar} from '@fortawesome/free-solid-svg-icons';
 import {faShoppingCart} from '@fortawesome/free-solid-svg-icons';
+import {faHistory} from '@fortawesome/free-solid-svg-icons';
 import Head from './components/Head';
 import Foot from './components/Foot';
 import Home from './components/Home';
@@ -23,7 +24,7 @@ import Logo from './img/lottery-tickets.png';
 import './css/app.css';
 
 // font awesome icon library
-library.add(faCopyright, faDice, faShoppingCart, faChartBar);
+library.add(faCopyright, faDice, faShoppingCart, faChartBar, faHistory);
 
 /**
 * React Component to Render WMPQ.org Website

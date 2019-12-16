@@ -33,6 +33,7 @@ class Home extends React.Component {
     pwrStdDev: 0, // standard deviation for powerball set
     whtStdDev: 0, // standard deviation for normal balls
     showData: false,
+    showHistory: false,
   }
 
   /**
@@ -52,6 +53,14 @@ class Home extends React.Component {
   toggleData = () =>{
     let status = this.state.showData ? false : true;
     this.setState({showData: status});
+  }
+
+  /**
+  * toggleHistory
+  */
+  toggleHistory = () =>{
+    let status = this.state.showHistory ? false : true;
+    this.setState({showHistory: status});
   }
 
 
@@ -375,6 +384,9 @@ class Home extends React.Component {
                 <FontAwesomeIcon icon='shopping-cart' /> Buy
               </a>
             </div>
+          </div>
+          <hr></hr>
+          <div className='row'>
             <div className='col-sm-2'>
               <button type='button'
                 onClick={this.toggleData}
@@ -382,28 +394,48 @@ class Home extends React.Component {
                 <FontAwesomeIcon icon='chart-bar' /> Display Data
               </button>
             </div>
+            <div className='col-sm-2'>
+              <button type='button'
+                onClick={this.toggleHistory}
+                className='btn btn-primary mb-1'>
+                <FontAwesomeIcon icon='history' /> Display History
+              </button>
+            </div>
           </div>
         </div>
-        <hr></hr>
         {this.state.showData ? <div>
-          <h2>Data</h2>
-          <Table
-            data={this.state.data}
-          />
-          <h2>Draw Counts</h2>
-          <Table
-            data={this.state.drawWeights}
-          />
-          <h2>Power Counts</h2>
-          <Table
-            data={this.state.powerWeights}
-          />
+          <hr></hr>
+          <div className='row'>
+            <div className='col-sm-12'>
+              <h2>Data</h2> <br></br>
+              <Table
+                data={this.state.data}
+              />
+            </div>
+          </div>
+          <div className='row'>
+            <div className='col-sm-6'>
+              <h2>Draw Counts</h2>
+              <Table
+                data={this.state.drawWeights}
+              />
+            </div>
+            <div className='col-sm-6'>
+              <h2>Power Counts</h2>
+              <Table
+                data={this.state.powerWeights}
+              />
+            </div>
+          </div>
+        </div>
+        : <br></br>}
+        {this.state.showHistory ? <div>
+          <hr></hr>
           <h2>Historical Draws</h2>
           <Table
             data={this.state.winning_number}
           />
-        </div>
-        : <hr></hr>}
+        </div> : <br></br>}
       </div>
     );
   }
