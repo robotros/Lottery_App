@@ -22,7 +22,10 @@ class Head extends Component {
         <nav className='navbar navbar-expand-lg navbar-dark bg-dark fixed-top'>
           <div className='container'>
             <div className='navbar-brand'>
-              <img src={this.props.logo} alt='Logo'></img>
+              <img src={this.props.logo}
+                alt='Logo'
+                className='logo'>
+              </img>
               <strong className='title'> {this.props.site}</strong> <br></br>
               {this.props.credentials.username !== '' ?
                 ' Welcome, '+this.props.credentials.username :''}
