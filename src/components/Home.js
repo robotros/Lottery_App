@@ -377,7 +377,7 @@ class Home extends React.Component {
               </button>
             </div>
             <div className='col-sm-2'>
-              <a href='https://www.buylottoonline.com/playlotto.php?lot_id=3&account=54d8aa45'
+              <a href='https://robourl.link/PowerBall'
                 target='_blank'
                 rel='noreferrer noopener'
                 className='btn btn-primary mb-1'>
