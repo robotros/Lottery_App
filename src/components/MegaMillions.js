@@ -1,6 +1,7 @@
 /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
 /* eslint no-invalid-this: "warn" */
 /* eslint max-len: "warn" */
+
 import React from 'react';
 import * as SocrataAPI from './SocrataAPI';
 import * as math from 'mathjs';
@@ -256,7 +257,8 @@ class MegaMillions extends React.Component {
     let totalDraws = this.state.winning_number.length;
     let lastDate = this.state.winning_number[totalDraws-1].draw_date
         .split('T')[0];
-    let lastWin = this.state.winning_number[totalDraws-1].winning_numbers+' '+this.state.winning_number[totalDraws-1].mega_ball;
+    let lastWin = this.state.winning_number[totalDraws-1].winning_numbers+
+      ' '+this.state.winning_number[totalDraws-1].mega_ball;
 
     dataSet.push({Description: 'Draws to Date',
       Value: totalDraws});
@@ -377,7 +379,8 @@ class MegaMillions extends React.Component {
               </button>
             </div>
             <div className='col-sm-2'>
-              <a href='https://www.buylottoonline.com/playlotto.php?lot_id=2&account=54d8aa45'
+              <a 
+                href='https://www.buylottoonline.com/playlotto.php?lot_id=2&account=54d8aa45'
                 target='_blank'
                 rel='noreferrer noopener'
                 className='btn btn-primary mb-1'>
