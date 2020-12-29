@@ -20,6 +20,7 @@ import {faHistory} from '@fortawesome/free-solid-svg-icons';
 import Head from './components/Head';
 import Foot from './components/Foot';
 import Home from './components/Home';
+import MegaMillions from './components/MegaMillions';
 import Logo from './img/lottery-tickets.png';
 import './css/app.css';
 
@@ -39,6 +40,11 @@ class LottoApp extends React.Component {
         'path': '/',
         'label': 'PowerBall',
         'component': Home,
+      },
+      {
+        'path': '/MegaMillions',
+        'label': 'MegaMillions',
+        'component': MegaMillions,
       },
     ],
     social: [
