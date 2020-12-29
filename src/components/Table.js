@@ -33,7 +33,7 @@ class Table extends Component {
             {this.props.data.map((L, index) =>
               <tr key={index}>
                 {Object.keys(L).map((key, index) =>
-                  <td key={key}>{L[key]}</td>)}
+                  <td key={key}>{(L[key] instanceof Date) ? L[key].toDateString() : L[key]}</td>)}
               </tr>)
             }
           </tbody>
