@@ -13,7 +13,7 @@ class SuggestedPlay extends Component {
   render() {
     return (
       <div>
-        <p className='font-weight-bold'>{this.props.sp.picks.join(', ')}, <span className='text-danger'>{this.props.sp.pb}</span></p>
+        <p className='fw-bold'>{this.props.sp.picks.join(', ')}, <span className='text-danger'>{this.props.sp.pb}</span></p>
       </div>
     );
   }

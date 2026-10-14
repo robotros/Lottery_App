@@ -4,7 +4,6 @@
 
 import React, {Component} from 'react';
 import NavLinks from './NavLinks';
-import Login from './Login';
 import PropTypes from 'prop-types';
 
 /**
@@ -12,11 +11,36 @@ import PropTypes from 'prop-types';
 * @author [Aron Roberts](https://github.com/robotros)
 */
 class Head extends Component {
+  state = {
+    navOpen: false,
+  };
+
+  /**
+   * Open or close the small-screen navigation.
+   */
+  toggleNav = () => {
+    this.setState(function(prev) {
+      return {navOpen: !prev.navOpen};
+    });
+  };
+
+  /**
+   * Close the menu after a link is chosen.
+   */
+  closeNav = () => {
+    this.setState({navOpen: false});
+  };
+
   /**
   * Render Component into html
   * @return {Component} html
   */
   render() {
+    const menuClass = 'collapse navbar-collapse' +
+      (this.state.navOpen ? ' show' : '');
+    const togglerClass = 'navbar-toggler' +
+      (this.state.navOpen ? '' : ' collapsed');
+
     return (
       <header>
         <nav className='navbar navbar-expand-lg navbar-dark bg-dark fixed-top'>
@@ -26,36 +50,24 @@ class Head extends Component {
                 alt='Logo'
                 className='logo'>
               </img>
-              <strong className='title'> {this.props.site}</strong> <br></br>
-              {this.props.credentials.username !== '' ?
-                ' Welcome, '+this.props.credentials.username :''}
+              <strong className='title'> {this.props.site}</strong>
             </div>
-            <button className='navbar-toggler'
+            <button className={togglerClass}
               type='button'
-              data-toggle='collapse'
-              data-target='#navbarResponsive'
               aria-controls='navbarResponsive'
-              aria-expanded='false'
-              aria-label='Toggle navigation'>
+              aria-expanded={this.state.navOpen}
+              aria-label='Toggle navigation'
+              onClick={this.toggleNav}>
               <span className='navbar-toggler-icon'></span>
             </button>
-            <div className='collapse navbar-collapse' id='navbarResponsive'>
-              <ul className='navbar-nav ml-auto'>
+            <div className={menuClass} id='navbarResponsive'>
+              <ul className='navbar-nav ms-auto' onClick={this.closeNav}>
                 {this.props.Nav.map((L) =>
                   <NavLinks
                     key={L.path}
                     L={L}
                   />)}
-
-                <li className='nav-item'>
-                  <Login
-                    credentials= {this.props.credentials}
-                    login = {this.props.login}
-                    logout = {this.props.logout}
-                  />
-                </li>
               </ul>
-
             </div>
           </div>
         </nav>
@@ -66,9 +78,6 @@ class Head extends Component {
 
 Head.propTypes = {
   Nav: PropTypes.array.isRequired,
-  credentials: PropTypes.object.isRequired,
-  login: PropTypes.func,
-  logout: PropTypes.func,
   logo: PropTypes.string.isRequired,
   site: PropTypes.string.isRequired,
 };

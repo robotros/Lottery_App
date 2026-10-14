@@ -22,7 +22,7 @@ class Table extends Component {
     return (
       <div>
         <table className ='table table-bordered'>
-          <thead className= 'thead-dark'>
+          <thead className='table-dark'>
             <tr>
               {headers.map((H, index)=>
                 <th scope='col' key={index}>{H}</th>
