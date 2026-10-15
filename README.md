@@ -10,11 +10,13 @@ There is no login and no ticket retailer link.
 
 ## Run
 
-Requires Node 22. This app still uses react-scripts 1.1.4, so the dev server needs the OpenSSL legacy provider. Do not expose the dev server. webpack-dev-server 2.9.4 is only for local development.
+Requires Node 22. Do not expose the dev server.
 
 ```
 npm ci
-NODE_OPTIONS=--openssl-legacy-provider npm start
+BROWSER=none npm start
 ```
 
 Open http://localhost:3000.
+
+`.npmrc` sets `install-strategy=nested` so ESLint's ajv 6 does not hide the ajv 8 copy that webpack-dev-server needs. Node 22 starts this toolchain without `NODE_OPTIONS=--openssl-legacy-provider`.
